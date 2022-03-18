@@ -29,7 +29,7 @@ const Auras = {
 		config.position.width = 540;
 		config.setPosition(config.position);
 
-		const nav = html.find('nav.sheet-tabs.tabs');
+		const nav = html.find('nav.sheet-tabs.tabs[data-group="main"]');
 		nav.append($(`
 			<a class="item" data-tab="auras">
 				<i class="far fa-dot-circle"></i>
