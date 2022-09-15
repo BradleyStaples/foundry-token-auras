@@ -115,6 +115,7 @@ const Auras = {
 };
 
 Hooks.on('renderTokenConfig', Auras.onConfigRender);
+Hooks.on('canvasReady', () => canvas.tokens.placeables.forEach(t => t.draw()));
 
 Token.prototype.draw = (function () {
 	const cached = Token.prototype.draw;
@@ -142,11 +143,14 @@ Token.prototype.drawAuras = function () {
 
 	if (auras.length) {
 		const gfx = this.auras.addChild(new PIXI.Graphics());
-		const squareGrid = canvas.scene.data.gridType === 1;
+		if (canvas.interface.reverseMaskfilter) {
+			gfx.filters = [canvas.interface.reverseMaskfilter];
+		}
+		const squareGrid = canvas.scene.grid.type === 1;
 		const dim = canvas.dimensions;
 		const unit = dim.size / dim.distance;
 		const [cx, cy] = [this.w / 2, this.h / 2];
-		const {width, height} = this.data;
+		const {width, height} = this.document;
 
 		auras.forEach(aura => {
 			let w, h;
@@ -168,7 +172,7 @@ Token.prototype.drawAuras = function () {
 
 			w *= unit;
 			h *= unit;
-			gfx.beginFill(colorStringToHex(aura.colour), aura.opacity);
+			gfx.beginFill(Color.from(aura.colour), aura.opacity);
 
 			if (aura.square) {
 				const [x, y] = [cx - w / 2, cy - h / 2];
