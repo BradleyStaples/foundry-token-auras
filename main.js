@@ -132,10 +132,13 @@ Token.prototype.drawAuras = function () {
 	// Some systems have special classes for auras, if we can't removeChildren, 
 	// then use the token's children and make sure to only remove the ones we created
 
-	if (this.auras.removeChildren) this.auras.removeChildren().forEach(c => c.destroy());
-	else if (this.removeChildren) {
+	if (this.auras.removeChildren) {
+		this.auras.removeChildren().forEach(c => c.destroy());
+	} else if (this.removeChildren) {
 		this.children.forEach(c => {
-			if (c.source === 'token-auras') c.destroy();
+			if (c.source === 'token-auras') {
+				c.destroy();
+			}
 		});
 	}
 
@@ -157,8 +160,9 @@ Token.prototype.drawAuras = function () {
 		// If we cannot create an aura as a child of the token through auras field, 
 		// then do it through direct token's children while keeping track of which children we created
 
-		if (this.auras.addChild) this.auras.addChild(gfx);
-		else if (this.addChild) {
+		if (this.auras.addChild) {
+			this.auras.addChild(gfx);
+		} else if (this.addChild) {
 			gfx.source = 'token-auras';
 			this.addChild(gfx);
 		}
