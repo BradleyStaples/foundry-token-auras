@@ -128,7 +128,20 @@ Token.prototype.draw = (function () {
 })();
 
 Token.prototype.drawAuras = function () {
-	this.auras.removeChildren().forEach(c => c.destroy());
+
+	// Some systems have special classes for auras, if we can't removeChildren, 
+	// then use the token's children and make sure to only remove the ones we created
+
+	if (this.auras.removeChildren) {
+		this.auras.removeChildren().forEach(c => c.destroy());
+	} else if (this.removeChildren) {
+		this.children.forEach(c => {
+			if (c.source === 'token-auras') {
+				c.destroy();
+			}
+		});
+	}
+
 	const auras = Auras.getAllAuras(this.document).filter(a => {
 		if (!a.distance) {
 			return false;
@@ -142,7 +155,18 @@ Token.prototype.drawAuras = function () {
 	});
 
 	if (auras.length) {
-		const gfx = this.auras.addChild(new PIXI.Graphics());
+		const gfx = new PIXI.Graphics();
+		
+		// If we cannot create an aura as a child of the token through auras field, 
+		// then do it through direct token's children while keeping track of which children we created
+
+		if (this.auras.addChild) {
+			this.auras.addChild(gfx);
+		} else if (this.addChild) {
+			gfx.source = 'token-auras';
+			this.addChild(gfx);
+		}
+
 		if (canvas.interface.reverseMaskfilter) {
 			gfx.filters = [canvas.interface.reverseMaskfilter];
 		}
