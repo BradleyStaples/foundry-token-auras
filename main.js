@@ -47,7 +47,7 @@ const Auras = {
 				i18n = 'USER.RoleGamemaster';
 			}
 
-			return { key: perm, label: game.i18n.localize(i18n) };
+			return {key: perm, label: game.i18n.localize(i18n)};
 		});
 
 		const auraConfig = auras.map((aura, idx) => `
@@ -135,7 +135,7 @@ Token.prototype.draw = (function () {
 
 Token.prototype.drawAuras = function () {
 
-	// Some systems have special classes for auras, if we can't removeChildren, 
+	// Some systems have special classes for auras, if we can't removeChildren,
 	// then use the token's children and make sure to only remove the ones we created
 
 	if (this.auras.removeChildren) {
@@ -163,7 +163,7 @@ Token.prototype.drawAuras = function () {
 	if (auras.length) {
 		const gfx = new PIXI.Graphics();
 
-		// If we cannot create an aura as a child of the token through auras field, 
+		// If we cannot create an aura as a child of the token through auras field,
 		// then do it through direct token's children while keeping track of which children we created
 
 		if (this.auras.addChild) {
@@ -180,7 +180,7 @@ Token.prototype.drawAuras = function () {
 		const dim = canvas.dimensions;
 		const unit = dim.size / dim.distance;
 		const [cx, cy] = [this.w / 2, this.h / 2];
-		const { width, height } = this.document;
+		const {width, height} = this.document;
 
 		auras.forEach(aura => {
 			let w, h;
