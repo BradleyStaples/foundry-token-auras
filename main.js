@@ -47,7 +47,7 @@ const Auras = {
 				i18n = 'USER.RoleGamemaster';
 			}
 
-			return {key: perm, label: game.i18n.localize(i18n)};
+			return { key: perm, label: game.i18n.localize(i18n) };
 		});
 
 		const auraConfig = auras.map((aura, idx) => `
@@ -104,18 +104,24 @@ const Auras = {
 
 		nav.parent()
 			.find('.tab[data-tab="auras"] input[type="color"][data-edit]')
-            .change(config._onChangeInput.bind(config));
+			.change(config._onChangeInput.bind(config));
 	},
 
 	uuid: function () {
-		return ([1e7]+-1e3+-4e3+-8e3+-1e11)
+		return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11)
 			.replace(/[018]/g, c =>
 				(c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16));
 	}
 };
 
 Hooks.on('renderTokenConfig', Auras.onConfigRender);
-Hooks.on('canvasReady', () => canvas.tokens.placeables.forEach(t => t.draw()));
+Hooks.on('canvasReady', () => canvas.tokens.placeables.forEach(t => {
+	// Some systems have special classes for auras, if we can't add children then we're going
+	// to use the token's children and thus don't need to force an initial draw.
+	if (t.auras.addChildren) {
+		t.draw();
+	}
+}));
 
 Token.prototype.draw = (function () {
 	const cached = Token.prototype.draw;
@@ -156,7 +162,7 @@ Token.prototype.drawAuras = function () {
 
 	if (auras.length) {
 		const gfx = new PIXI.Graphics();
-		
+
 		// If we cannot create an aura as a child of the token through auras field, 
 		// then do it through direct token's children while keeping track of which children we created
 
@@ -174,7 +180,7 @@ Token.prototype.drawAuras = function () {
 		const dim = canvas.dimensions;
 		const unit = dim.size / dim.distance;
 		const [cx, cy] = [this.w / 2, this.h / 2];
-		const {width, height} = this.document;
+		const { width, height } = this.document;
 
 		auras.forEach(aura => {
 			let w, h;
