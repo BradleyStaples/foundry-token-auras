@@ -38,7 +38,7 @@ const Auras = {
 		`));
 
 		const permissions = Auras.PERMISSIONS.map(perm => {
-			let i18n = `PERMISSION.${perm.toUpperCase()}`;
+			let i18n = `OWNERSHIP.${perm.toUpperCase()}`;
 			if (perm === 'all') {
 				i18n = 'AURAS.All';
 			}
@@ -132,16 +132,11 @@ const Auras = {
 
 	drawAuras: function (token) {
 		if ( token.tokenAuras?.removeChildren ) token.tokenAuras.removeChildren().forEach(c => c.destroy());
+		if ( token.document.hidden ) return;
 
 		const auras = Auras.getAllAuras(token.document).filter(a => {
-			if (!a.distance) {
-				return false;
-			}
-
-			if (!a.permission || a.permission === 'all' || (a.permission === 'gm' && game.user.isGM)) {
-				return true;
-			}
-
+			if ( !a.distance || (a.permission === 'gm' && !game.user.isGM) ) return false;
+			if ( !a.permission || a.permission === 'all' || (a.permission === 'gm' && game.user.isGM) ) return true;
 			return !!token.document?.actor?.testUserPermission(game.user, a.permission.toUpperCase());
 		});
 
