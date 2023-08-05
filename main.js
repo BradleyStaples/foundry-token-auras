@@ -125,14 +125,15 @@ const Auras = {
 			data.flags?.['token-auras']
 			&& ['aura1', 'aura2', 'auras'].some(k => typeof data.flags['token-auras'][k] === 'object');
 
+		const hiddenUpdated = "hidden" in data;
 		const sizeUpdated = "width" in data || "height" in data;
 
-		if ( aurasUpdated || sizeUpdated ) Auras.drawAuras(token.object);
+		if ( aurasUpdated || hiddenUpdated || sizeUpdated ) Auras.drawAuras(token.object);
 	},
 
 	drawAuras: function (token) {
 		if ( token.tokenAuras?.removeChildren ) token.tokenAuras.removeChildren().forEach(c => c.destroy());
-		if ( token.document.hidden ) return;
+		if ( token.document.hidden && !game.user.isGM ) return;
 
 		const auras = Auras.getAllAuras(token.document).filter(a => {
 			if ( !a.distance || (a.permission === 'gm' && !game.user.isGM) ) return false;
