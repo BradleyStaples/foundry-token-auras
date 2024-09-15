@@ -1,4 +1,7 @@
 # Token Auras
+
+Forked from [https://bitbucket.org/Fyorl/token-auras/src/master/](https://bitbucket.org/Fyorl/token-auras/src/master/).
+
 A [FoundryVTT](https://foundryvtt.com) module for configuring token auras. Auras are visual only, but should work in any system and can be used as a basis to build more advanced features on top of. The module adds configuration options for up to two auras to the token configuration dialog, and additional auras can be added programmatically, with no limit.
 
 ![Example token configuration](https://bitbucket.org/Fyorl/token-auras/raw/master/example-config.jpg)
