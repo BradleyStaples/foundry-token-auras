@@ -1,6 +1,10 @@
 const Auras = {
 	PERMISSIONS: ['all', 'limited', 'observer', 'owner', 'gm'],
 
+	getAuraLayer: function ()  {
+        return canvas.interface.grid.getHighlightLayer('tokenAuras');
+    },
+
 	getAllAuras: function (doc) {
 		return Auras.getManualAuras(doc).concat(doc.getFlag('token-auras', 'auras') || []);
 	},
@@ -143,7 +147,7 @@ const Auras = {
 
 		if ( !auras.length ) return;
 
-		token.tokenAuras ??= canvas.grid.tokenAuras.addChild(new PIXI.Container());
+		token.tokenAuras ??= Auras.getAuraLayer().addChild(new PIXI.Container());
 		const gfx = token.tokenAuras.addChild(new PIXI.Graphics());
 		const squareGrid = canvas.scene.grid.type === 1;
 		const dim = canvas.dimensions;
@@ -190,6 +194,6 @@ Hooks.on('drawToken', Auras.drawAuras);
 Hooks.on('refreshToken', Auras.onRefreshToken);
 Hooks.on('updateToken', Auras.onUpdateToken);
 Hooks.on('drawGridLayer', layer => {
-	layer.tokenAuras = layer.addChildAt(new PIXI.Container(), layer.getChildIndex(layer.borders));
+	canvas.interface.grid.addHighlightLayer('tokenAuras')
 });
 Hooks.on('destroyToken', token => token.tokenAuras?.destroy());
