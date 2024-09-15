@@ -10,11 +10,11 @@
 		"minimum": 10,
 		"verified": 11
 	},
-	"authors": [{"name": "Kim Mantas"}],
+	"authors": [{"name": "Kim Mantas"}, {"name": "Bradley Staples"}],
 	"scripts": ["main.js"],
-	"url": "https://bitbucket.org/Fyorl/token-auras",
-	"manifest": "https://bitbucket.org/Fyorl/token-auras/raw/master/module.json",
-	"download": "https://bitbucket.org/Fyorl/token-auras/get/2.7.zip",
+	"url": "https://github.com/BradleyStaples/foundry-token-auras",
+	"manifest": "https://raw.githubusercontent.com/BradleyStaples/foundry-token-auras/master/module.json",
+	"download": "https://github.com/BradleyStaples/foundry-token-auras/archive/refs/tags/v3.0.zip",
 	"languages": [{
 		"lang": "en",
 		"name": "English",
